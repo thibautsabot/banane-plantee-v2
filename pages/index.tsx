@@ -21,11 +21,11 @@ const Index = ({ allPosts }: Props) => {
             {allPosts.map((post) => (
               <PostPreview
                 key={post.slug}
-                title={post.title}
-                coverImage={post.coverImage}
-                date={post.date}
+                title={post.frontmatter.title}
+                coverImage={post.frontmatter.coverImage}
+                date={post.frontmatter.date}
                 slug={post.slug}
-                description={post.description}
+                description={post.frontmatter.description}
               />
             ))}
           </div>
@@ -38,13 +38,7 @@ const Index = ({ allPosts }: Props) => {
 export default Index;
 
 export const getStaticProps = async () => {
-  const allPosts = getAllPosts([
-    "title",
-    "date",
-    "slug",
-    "coverImage",
-    "description",
-  ]);
+  const allPosts = await getAllPosts();
 
   return {
     props: { allPosts },

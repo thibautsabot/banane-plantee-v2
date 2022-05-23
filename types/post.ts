@@ -1,13 +1,15 @@
-type PostType = {
+type Post = {
   slug: string
-  title: string
-  date: string
-  coverImage: string
-  description: string
-  ogImage: {
-    url: string
+  code: string
+  frontmatter: {
+    title: string
+    date: string
+    coverImage: string
+    description: string
+    ogImage: {
+      url: string
+    }
   }
-  content: string
 }
 
-export default PostType
+export default Post

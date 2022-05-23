@@ -21,9 +21,9 @@ const PostPreview = ({ title, coverImage, date, description, slug }: Props) => {
           <a className="hover:underline">{title}</a>
         </Link>
       </h3>
-      <div className="text-lg mb-4">
+      {/* <div className="text-lg mb-4">
         <DateFormatter dateString={date} />
-      </div>
+      </div> */}
       <p className="text-lg leading-relaxed mb-4">{description}</p>
     </div>
   );

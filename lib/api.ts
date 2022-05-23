@@ -1,47 +1,46 @@
-import fs from 'fs'
-import { join } from 'path'
-import matter from 'gray-matter'
+import { bundleMDX } from "mdx-bundler";
+import fs from "fs";
+import { join } from "path";
 
-const postsDirectory = join(process.cwd(), '_posts')
+const postsDirectory = join(process.cwd(), "posts");
 
-export function getPostSlugs() {
-  return fs.readdirSync(postsDirectory)
+export async function getPostBySlug(slug: string) {
+  const fileContents = fs.readFileSync(
+    join(postsDirectory, `${slug}.mdx`),
+    "utf8"
+  );
+  const blogContent = await bundleMDX({ source: fileContents });
+  const { code, frontmatter } = blogContent;
+
+  return { code, frontmatter };
 }
 
-export function getPostBySlug(slug: string, fields: string[] = []) {
-  const realSlug = slug.replace(/\.md$/, '')
-  const fullPath = join(postsDirectory, `${realSlug}.md`)
-  const fileContents = fs.readFileSync(fullPath, 'utf8')
-  const { data, content } = matter(fileContents)
+export async function getAllPosts() {
+  const slugs = getBlogPostsSlugs({});
+  const posts = await Promise.all(slugs.map((slug) => getPostBySlug(slug)));
 
-  type Items = {
-    [key: string]: string
-  }
+  const postWithSlugs = posts
+    .sort((post1, post2) =>
+      post1.frontmatter.date > post2.frontmatter.date ? -1 : 1
+    )
+    .map((post) => ({
+      ...post,
+      slug: post.frontmatter.title
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/ /g, "-")
+        .toLowerCase(),
+    }));
 
-  const items: Items = {}
-
-  // Ensure only the minimal needed data is exposed
-  fields.forEach((field) => {
-    if (field === 'slug') {
-      items[field] = realSlug
-    }
-    if (field === 'content') {
-      items[field] = content
-    }
-
-    if (typeof data[field] !== 'undefined') {
-      items[field] = data[field]
-    }
-  })
-
-  return items
+  return postWithSlugs;
 }
 
-export function getAllPosts(fields: string[] = []) {
-  const slugs = getPostSlugs()
-  const posts = slugs
-    .map((slug) => getPostBySlug(slug, fields))
-    // sort posts by date in descending order
-    .sort((post1, post2) => (post1.date > post2.date ? -1 : 1))
-  return posts
+export function getBlogPostsSlugs({
+  limit = 10,
+}: {
+  limit?: number;
+}): string[] {
+  const blogPosts = fs.readdirSync(postsDirectory);
+
+  blogPosts.splice(limit, blogPosts.length);
+  return blogPosts.map((post) => post.replace(/.mdx/, ""));
 }
