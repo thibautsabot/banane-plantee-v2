@@ -29,11 +29,12 @@ const textToImage = {
             document.referrer.indexOf("admin/") + 6
           );
 
+          // Convert file to base64 to send to the API
           reader.readAsDataURL(file);
           reader.onloadend = async function () {
             const base64data = reader.result;
 
-            // Upload the file to our API route
+            // Upload the file to the API route
             await fetch("/api/file", {
               method: "POST",
               body: JSON.stringify({
