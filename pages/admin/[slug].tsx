@@ -1,16 +1,36 @@
-import { getBlogPostsSlugs, getPostBySlug } from "../../lib/api";
-import Container from "../../components/container";
+import { compile } from "@mdx-js/mdx";
+import "@uiw/react-markdown-preview/markdown.css";
+import "@uiw/react-md-editor/markdown-editor.css";
+import dynamic from "next/dynamic";
 import ErrorPage from "next/error";
-import Head from "next/head";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import Container from "../../components/container";
 import Layout from "../../components/layout";
 import PostBody from "../../components/post-body";
-import PostHeader from "../../components/post-header";
 import PostTitle from "../../components/post-title";
-import { useRouter } from "next/router";
+import { getBlogPostsSlugs, getPostBySlug } from "../../lib/api";
 import type Post from "../../types/post";
+
+const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
 
 const Post = ({ post }: { post: Post }) => {
   const router = useRouter();
+  const [value, setValue] = useState(post.fileContent || "");
+  const [mdxValue, setMdxValue] = useState("");
+
+  const saveAsMDX = async (value: string) => {
+    setValue(value);
+
+    const content = await compile(value, {
+      outputFormat: "function-body",
+    });
+    setMdxValue(String(content));
+  };
+
+  useEffect(() => {
+    saveAsMDX(value);
+  }, []);
 
   if (!router.isFallback && !post?.slug) {
     return <ErrorPage statusCode={404} />;
@@ -22,21 +42,12 @@ const Post = ({ post }: { post: Post }) => {
           <PostTitle>Loading…</PostTitle>
         ) : (
           <>
-            <article className="mb-32">
-              <Head>
-                <title>{post.frontmatter.title} | Next.js Blog Example</title>
-                <meta
-                  property="og:image"
-                  content={post.frontmatter.ogImage.url}
-                />
-              </Head>
-              <PostHeader
-                title={post.frontmatter.title}
-                coverImage={post.frontmatter.coverImage}
-                date={post.frontmatter.date}
-              />
-              <PostBody content={post.code} />
-            </article>
+            <MDEditor
+              preview="edit"
+              value={value}
+              onChange={saveAsMDX as any}
+            />
+            <PostBody content={mdxValue} />
           </>
         )}
       </Container>

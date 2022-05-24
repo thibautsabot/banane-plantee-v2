@@ -1,18 +1,30 @@
-import { bundleMDX } from "mdx-bundler";
+import Post from '../types/post';
+import { compile } from '@mdx-js/mdx'
 import fs from "fs";
 import { join } from "path";
+import yaml from 'js-yaml'
 
 const postsDirectory = join(process.cwd(), "posts");
 
-export async function getPostBySlug(slug: string) {
+export async function getPostBySlug(slug: string): Promise<Post> {
   const fileContents = fs.readFileSync(
     join(postsDirectory, `${slug}.mdx`),
     "utf8"
   );
-  const blogContent = await bundleMDX({ source: fileContents });
-  const { code, frontmatter } = blogContent;
 
-  return { code, frontmatter };
+  const headerStart = fileContents.indexOf('---') + 3
+  const headerEnd = fileContents.indexOf("---", headerStart)
+  const header = fileContents.substring(headerStart, headerEnd);
+
+  const frontmatter = yaml.loadAll(header)[0] as Post['frontmatter']
+
+  const fileWithoutHeader = fileContents.substring(headerEnd + 3)
+
+  const blogContent = await compile(fileWithoutHeader, {
+    outputFormat: 'function-body'
+  })
+
+  return { code: String(blogContent), frontmatter, fileContent: fileWithoutHeader, slug };
 }
 
 export async function getAllPosts() {
@@ -23,13 +35,6 @@ export async function getAllPosts() {
     .sort((post1, post2) =>
       post1.frontmatter.date > post2.frontmatter.date ? -1 : 1
     )
-    .map((post) => ({
-      ...post,
-      slug: post.frontmatter.title
-        .replace(/[\u0300-\u036f]/g, "")
-        .replace(/ /g, "-")
-        .toLowerCase(),
-    }));
 
   return postWithSlugs;
 }

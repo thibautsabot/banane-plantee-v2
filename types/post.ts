@@ -10,6 +10,7 @@ type Post = {
       url: string
     }
   }
+  fileContent?: string
 }
 
 export default Post

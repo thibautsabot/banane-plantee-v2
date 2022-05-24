@@ -1,5 +1,8 @@
-import { getMDXComponent } from "mdx-bundler/client";
-import { useMemo } from "react";
+import * as runtime from "react/jsx-runtime";
+
+import { Fragment, useEffect, useState } from "react";
+
+import { run } from "@mdx-js/mdx";
 
 type Props = {
   content: string;
@@ -12,13 +15,16 @@ const components = {
 };
 
 const PostBody = ({ content }: Props) => {
-  const Component = useMemo(() => getMDXComponent(content), [content]);
+  const [mdxModule, setMdxModule] = useState<any>();
+  const Content = mdxModule ? mdxModule.default : Fragment;
 
-  return (
-    <div className="max-w-2xl mx-auto">
-      <Component components={{}} />
-    </div>
-  );
+  useEffect(() => {
+    (async () => {
+      setMdxModule(await run(content, runtime));
+    })();
+  }, [content]);
+
+  return <Content />;
 };
 
 export default PostBody;
