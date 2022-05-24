@@ -1,4 +1,5 @@
 import { getBlogPostsSlugs, getPostBySlug } from "../../lib/api";
+
 import Container from "../../components/container";
 import ErrorPage from "next/error";
 import Head from "next/head";
@@ -6,10 +7,10 @@ import Layout from "../../components/layout";
 import PostBody from "../../components/post-body";
 import PostHeader from "../../components/post-header";
 import PostTitle from "../../components/post-title";
+import type PostType from "../../types/post";
 import { useRouter } from "next/router";
-import type Post from "../../types/post";
 
-const Post = ({ post }: { post: Post }) => {
+const Post = ({ post }: { post: PostType }) => {
   const router = useRouter();
 
   if (!router.isFallback && !post?.slug) {

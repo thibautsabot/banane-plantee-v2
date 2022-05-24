@@ -1,6 +1,7 @@
 import * as runtime from "react/jsx-runtime";
 
-import { Fragment, useEffect, useState } from "react";
+import NextImage, { ImageProps } from "next/image";
+import { useEffect, useState } from "react";
 
 import { run } from "@mdx-js/mdx";
 
@@ -8,15 +9,13 @@ type Props = {
   content: string;
 };
 
-const ResponsiveImage = () => <h3 />;
-
 const components = {
-  h2: ResponsiveImage,
+  Image: (props: ImageProps) => <NextImage {...props} />,
 };
 
 const PostBody = ({ content }: Props) => {
   const [mdxModule, setMdxModule] = useState<any>();
-  const Content = mdxModule ? mdxModule.default : Fragment;
+  const Content = mdxModule?.default;
 
   useEffect(() => {
     (async () => {
@@ -24,7 +23,7 @@ const PostBody = ({ content }: Props) => {
     })();
   }, [content]);
 
-  return <Content />;
+  return mdxModule ? <Content components={components} /> : null;
 };
 
 export default PostBody;

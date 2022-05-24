@@ -1,31 +1,37 @@
-import { compile } from "@mdx-js/mdx";
 import "@uiw/react-markdown-preview/markdown.css";
 import "@uiw/react-md-editor/markdown-editor.css";
-import dynamic from "next/dynamic";
-import ErrorPage from "next/error";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+
+import { getBlogPostsSlugs, getPostBySlug } from "../../lib/api";
+import { useEffect, useRef, useState } from "react";
+
 import Container from "../../components/container";
+import ErrorPage from "next/error";
 import Layout from "../../components/layout";
 import PostBody from "../../components/post-body";
 import PostTitle from "../../components/post-title";
-import { getBlogPostsSlugs, getPostBySlug } from "../../lib/api";
-import type Post from "../../types/post";
+import type PostType from "../../types/post";
+import { compile } from "@mdx-js/mdx";
+import dynamic from "next/dynamic";
+import textToImage from "../../components/image";
+import { useRouter } from "next/router";
 
 const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
 
-const Post = ({ post }: { post: Post }) => {
+const Post = ({ post }: { post: PostType }) => {
   const router = useRouter();
   const [value, setValue] = useState(post.fileContent || "");
   const [mdxValue, setMdxValue] = useState("");
+  const fileRef = useRef<HTMLInputElement>(null);
 
-  const saveAsMDX = async (value: string) => {
-    setValue(value);
+  const saveAsMDX = async (value?: string) => {
+    if (value) {
+      setValue(value);
 
-    const content = await compile(value, {
-      outputFormat: "function-body",
-    });
-    setMdxValue(String(content));
+      const content = await compile(value, {
+        outputFormat: "function-body",
+      });
+      setMdxValue(String(content));
+    }
   };
 
   useEffect(() => {
@@ -45,9 +51,16 @@ const Post = ({ post }: { post: Post }) => {
             <MDEditor
               preview="edit"
               value={value}
-              onChange={saveAsMDX as any}
+              onChange={saveAsMDX}
+              extraCommands={[textToImage]}
             />
             <PostBody content={mdxValue} />
+            <input
+              ref={fileRef}
+              id="file-input"
+              type="file"
+              style={{ display: "none" }}
+            />
           </>
         )}
       </Container>
