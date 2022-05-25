@@ -16,7 +16,7 @@ export async function getPostBySlug(slug: string): Promise<Post> {
   const headerEnd = fileContents.indexOf("---", headerStart)
   const header = fileContents.substring(headerStart, headerEnd);
 
-  const frontmatter = yaml.loadAll(header)[0] as Post['frontmatter']
+  const frontmatter = yaml.load(header) as Post['frontmatter']
 
   const fileWithoutHeader = fileContents.substring(headerEnd + 3)
 

@@ -14,6 +14,7 @@ import { compile } from "@mdx-js/mdx";
 import dynamic from "next/dynamic";
 import textToImage from "../../components/image";
 import { useRouter } from "next/router";
+import yaml from "js-yaml";
 
 const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
 
@@ -34,6 +35,19 @@ const Post = ({ post }: { post: PostType }) => {
     }
   };
 
+  const saveBlogPost = async () => {
+    const header = yaml.dump(post.frontmatter);
+    const content = `---\n${header}\n---\n${value}`;
+
+    await fetch("/api/uploadPost", {
+      method: "POST",
+      body: JSON.stringify({
+        content,
+        slug: router.query.slug,
+      }),
+    });
+  };
+
   useEffect(() => {
     saveAsMDX(value);
   }, []);
@@ -48,6 +62,9 @@ const Post = ({ post }: { post: PostType }) => {
           <PostTitle>Loading…</PostTitle>
         ) : (
           <>
+            <button type="button" onClick={saveBlogPost}>
+              Sauvegarder
+            </button>
             <MDEditor
               preview="edit"
               value={value}

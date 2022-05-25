@@ -1,3 +1,5 @@
+import sanitize from "../lib/sanitize";
+
 const textToImage = {
   name: "Text To Image",
   keyCommand: "text2image",
@@ -21,10 +23,7 @@ const textToImage = {
           const img = new Image();
           const objectUrl = URL.createObjectURL(file);
           const reader = new FileReader();
-          const filename = file.name
-            .replace(/[\u0300-\u036f]/g, "")
-            .replace(/ /g, "-")
-            .toLowerCase();
+          const filename = sanitize(file.name);
           const slug = document.referrer.substring(
             document.referrer.indexOf("admin/") + 6
           );
@@ -35,7 +34,7 @@ const textToImage = {
             const base64data = reader.result;
 
             // Upload the file to the API route
-            await fetch("/api/file", {
+            await fetch("/api/uploadImage", {
               method: "POST",
               body: JSON.stringify({
                 file: base64data,
