@@ -14,15 +14,24 @@ import { compile } from "@mdx-js/mdx";
 import dynamic from "next/dynamic";
 import textToImage from "../../components/image";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import yaml from "js-yaml";
 
 const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
 
-const Post = ({ post }: { post: PostType }) => {
+const Post = ({ post }: { post?: PostType }) => {
+  const { data: session, status } = useSession();
+  console.log("session : ", session);
   const router = useRouter();
-  const [value, setValue] = useState(post.fileContent || "");
+  const [value, setValue] = useState(post?.fileContent || "");
   const [mdxValue, setMdxValue] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (status !== "loading" && !session) {
+      router.push("/admin/signin");
+    }
+  }, [session]);
 
   const saveAsMDX = async (value?: string) => {
     if (value) {
@@ -36,7 +45,7 @@ const Post = ({ post }: { post: PostType }) => {
   };
 
   const saveBlogPost = async () => {
-    const header = yaml.dump(post.frontmatter);
+    const header = yaml.dump(post?.frontmatter);
     const content = `---\n${header}\n---\n${value}`;
 
     await fetch("/api/uploadPost", {
