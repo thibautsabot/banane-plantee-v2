@@ -22,7 +22,6 @@ const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
 
 const Post = ({ post }: { post?: PostType }) => {
   const { data: session, status } = useSession();
-  console.log("session : ", session);
   const router = useRouter();
   const [value, setValue] = useState(post?.fileContent || "");
   const [mdxValue, setMdxValue] = useState("");
@@ -32,12 +31,10 @@ const Post = ({ post }: { post?: PostType }) => {
     if (status !== "loading" && !session) {
       router.push("/admin/signin");
     }
-  }, [session]);
+  }, [session, status, router]);
 
   const saveAsMDX = async (value?: string) => {
     if (value) {
-      setValue(value);
-
       const content = await compile(value, {
         outputFormat: "function-body",
       });
@@ -60,7 +57,7 @@ const Post = ({ post }: { post?: PostType }) => {
 
   useEffect(() => {
     saveAsMDX(value);
-  }, []);
+  }, [value]);
 
   if (!router.isFallback && !post?.slug) {
     return <ErrorPage statusCode={404} />;
@@ -78,7 +75,7 @@ const Post = ({ post }: { post?: PostType }) => {
             <MDEditor
               preview="edit"
               value={value}
-              onChange={saveAsMDX}
+              onChange={(value) => setValue(value || "")}
               extraCommands={[textToImage]}
             />
             <PostBody content={mdxValue} />

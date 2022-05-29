@@ -8,12 +8,13 @@ import {
 
 function buildLunr() {
   const slugs = getBlogPostsSlugs({ limit: 1000 });
-  const frontmatters = slugs.map((slug) => {
+  const frontmatters = slugs.map((slug, i) => {
     const fileContent = getFileContent(slug);
 
     return {
       title: getFrontMatter(fileContent).frontmatter.title,
       slug,
+      id: i + 1
     };
   });
 
