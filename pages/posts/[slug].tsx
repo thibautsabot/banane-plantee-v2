@@ -1,5 +1,3 @@
-import { getBlogPostsSlugs, getPostBySlug } from "../../lib/api";
-
 import Container from "../../components/container";
 import ErrorPage from "next/error";
 import Head from "next/head";
@@ -8,6 +6,8 @@ import PostBody from "../../components/post-body";
 import PostHeader from "../../components/post-header";
 import PostTitle from "../../components/post-title";
 import type PostType from "../../types/post";
+import { getBlogPostsSlugs } from "../../lib/frontmatter";
+import { getPostBySlug } from "../../lib/api";
 import { useRouter } from "next/router";
 
 const Post = ({ post }: { post: PostType }) => {

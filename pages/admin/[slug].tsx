@@ -1,7 +1,6 @@
 import "@uiw/react-markdown-preview/markdown.css";
 import "@uiw/react-md-editor/markdown-editor.css";
 
-import { getBlogPostsSlugs, getPostBySlug } from "../../lib/api";
 import { useEffect, useRef, useState } from "react";
 
 import Container from "../../components/container";
@@ -12,6 +11,8 @@ import PostTitle from "../../components/post-title";
 import type PostType from "../../types/post";
 import { compile } from "@mdx-js/mdx";
 import dynamic from "next/dynamic";
+import { getBlogPostsSlugs } from "../../lib/frontmatter";
+import { getPostBySlug } from "../../lib/api";
 import textToImage from "../../components/image";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";

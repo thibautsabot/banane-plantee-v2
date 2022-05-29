@@ -2,18 +2,20 @@
   "private": true,
   "scripts": {
     "dev": "next",
-    "build": "next build",
+    "build": "npm run lunr && next build",
     "start": "next start",
     "typecheck": "tsc",
-    "lint": "eslint"
+    "lint": "eslint",
+    "lunr": "tsc --outDir ./lib/lunrjs ./lib/buildLunr.ts && node ./lib/lunrjs/lib/buildLunr.js"
   },
   "dependencies": {
     "@mdx-js/mdx": "^2.1.1",
     "@uiw/react-md-editor": "^3.13.0",
-    "classnames": "2.3.1",
-    "date-fns": "2.28.0",
+    "classnames": "^2.3.1",
+    "date-fns": "^2.28.0",
     "js-yaml": "^4.1.0",
-    "next": "latest",
+    "lunr": "^2.3.9",
+    "next": "^12.1.6",
     "next-auth": "^4.3.4",
     "next-remove-imports": "^1.0.6",
     "react": "^18.1.0",
@@ -23,13 +25,14 @@
   "devDependencies": {
     "@types/jest": "^27.5.1",
     "@types/js-yaml": "^4.0.5",
+    "@types/lunr": "^2.3.4",
     "@types/node": "^17.0.35",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
-    "autoprefixer": "10.4.7",
-    "eslint": "8.16.0",
-    "eslint-config-next": "12.1.6",
-    "postcss": "8.4.14",
-    "tailwindcss": "3.0.24"
+    "autoprefixer": "^10.4.7",
+    "eslint": "^8.16.0",
+    "eslint-config-next": "^12.1.6",
+    "postcss": "^8.4.14",
+    "tailwindcss": "^3.0.24"
   }
 }
