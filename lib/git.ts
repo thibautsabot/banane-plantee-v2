@@ -102,22 +102,35 @@ const setBranchToCommit = (octo: Octokit, branch: string, commitSha: string) =>
     sha: commitSha,
   });
 
-  const openPullRequest = async (octokit: Octokit, branch: string) => {
-    await octokit.rest.pulls.create({
-      owner: "thibautsabot",
-      repo: "banane-plantee-v2",
-      head: branch,
-      title: 'New blog post',
-      base: 'main',
-    });
-  }
+const openPullRequest = async (octokit: Octokit, branch: string) => {
+  await octokit.rest.pulls.create({
+    owner: "thibautsabot",
+    repo: "banane-plantee-v2",
+    head: branch,
+    title: "New blog post",
+    base: "main",
+  });
+};
+
+const listPullRequests = async () => {
+  const octokit = new Octokit({
+    auth: process.env.GITHUB_TOKEN,
+  });
+
+  const pulls = await octokit.rest.pulls.list({
+    owner: "thibautsabot",
+    repo: "banane-plantee-v2",
+  });
+
+  return pulls.data;
+};
 
 const commitBlogPost = async (body: Body, folder: string) => {
   const octokit = new Octokit({
     auth: process.env.GITHUB_TOKEN,
   });
 
-  const branchName = 'new-blog-' + body.slug
+  const branchName = "new-blog-" + body.slug;
 
   const currentCommit = await getCurrentCommit(octokit, branchName);
 
@@ -151,11 +164,10 @@ const commitBlogPost = async (body: Body, folder: string) => {
   await setBranchToCommit(octokit, branchName, newCommit.sha);
 
   try {
-    await openPullRequest(octokit, branchName)
+    await openPullRequest(octokit, branchName);
   } catch (e) {
-    console.error(e)
+    console.error(e);
   }
-
 };
 
-export { commitBlogPost };
+export { commitBlogPost, listPullRequests };

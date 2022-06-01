@@ -69,6 +69,11 @@ const Post = ({ post }: { post?: PostType }) => {
           <PostTitle>Loading…</PostTitle>
         ) : (
           <>
+            {false && (
+              <button type="button" onClick={() => console.log("post publié")}>
+                Publier
+              </button>
+            )}
             <button type="button" onClick={saveBlogPost}>
               Sauvegarder
             </button>

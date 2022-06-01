@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import { Octokit } from "@octokit/rest";
 import { commitBlogPost } from "../../lib/git";
 import fs from "node:fs";
 import { getSession } from "next-auth/react";
