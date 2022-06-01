@@ -1,8 +1,15 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
+import { Octokit } from "@octokit/rest";
+import { commitBlogPost } from "../../lib/git";
 import fs from "node:fs";
 import { getSession } from "next-auth/react";
 import path from "node:path";
+
+export interface Body {
+  content: string;
+  slug: string;
+}
 
 export default async function handler(
   req: NextApiRequest,
@@ -11,7 +18,7 @@ export default async function handler(
   const session = await getSession({ req });
 
   if (session) {
-    const body = JSON.parse(req.body);
+    const body: Body = JSON.parse(req.body);
     const folder = path.join(process.cwd() + `/posts/`);
 
     fs.writeFileSync(
@@ -19,6 +26,8 @@ export default async function handler(
       body.content,
       "utf8"
     );
+
+    await commitBlogPost(body, folder);
 
     res.status(201).json({});
   } else {
