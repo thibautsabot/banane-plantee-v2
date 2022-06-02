@@ -9,6 +9,7 @@ import Layout from "../../components/layout";
 import PostBody from "../../components/post-body";
 import PostTitle from "../../components/post-title";
 import type PostType from "../../types/post";
+import { RestEndpointMethodTypes } from "@octokit/rest";
 import { compile } from "@mdx-js/mdx";
 import dynamic from "next/dynamic";
 import { getBlogPostsSlugs } from "../../lib/frontmatter";
@@ -18,12 +19,15 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import yaml from "js-yaml";
 
+type PullList = RestEndpointMethodTypes["pulls"]["list"]["response"]["data"];
+
 const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
 
 const Post = ({ post }: { post?: PostType }) => {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [value, setValue] = useState(post?.fileContent || "");
+  const [PRNumber, setPRNumber] = useState(0);
   const [mdxValue, setMdxValue] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -53,15 +57,40 @@ const Post = ({ post }: { post?: PostType }) => {
         slug: router.query.slug,
       }),
     });
+    if (PRNumber === 0) {
+      getPullRequest();
+    }
+  };
+
+  const publishBlogPost = async () => {
+    await fetch(`/api/mergePullRequest?id=${PRNumber}`);
+    setPRNumber(0);
+  };
+
+  const getPullRequest = () => {
+    return fetch(`/api/getPullRequests?id=${router.query.slug}`)
+      .then((res) => res.json())
+      .then((data: PullList) => {
+        if (data.length > 0) {
+          setPRNumber(data[0].number);
+        } else {
+          setPRNumber(0);
+        }
+      });
   };
 
   useEffect(() => {
     saveAsMDX(value);
   }, [value]);
 
+  useEffect(() => {
+    getPullRequest();
+  }, []);
+
   if (!router.isFallback && !post?.slug) {
     return <ErrorPage statusCode={404} />;
   }
+
   return (
     <Layout>
       <Container>
@@ -69,8 +98,8 @@ const Post = ({ post }: { post?: PostType }) => {
           <PostTitle>Loading…</PostTitle>
         ) : (
           <>
-            {false && (
-              <button type="button" onClick={() => console.log("post publié")}>
+            {!!PRNumber && (
+              <button type="button" onClick={publishBlogPost}>
                 Publier
               </button>
             )}

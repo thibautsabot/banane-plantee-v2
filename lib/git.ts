@@ -1,5 +1,6 @@
+import { Octokit, RestEndpointMethodTypes } from "@octokit/rest";
+
 import { Body } from "../pages/api/uploadPost";
-import { Octokit } from "@octokit/rest";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -112,7 +113,7 @@ const openPullRequest = async (octokit: Octokit, branch: string) => {
   });
 };
 
-const listPullRequests = async () => {
+const listPullRequests = async (branch?: string) => {
   const octokit = new Octokit({
     auth: process.env.GITHUB_TOKEN,
   });
@@ -120,6 +121,21 @@ const listPullRequests = async () => {
   const pulls = await octokit.rest.pulls.list({
     owner: "thibautsabot",
     repo: "banane-plantee-v2",
+    ...(branch ? { head: `thibautsabot:new-blog-${branch}` } : {}),
+  });
+
+  return pulls.data;
+};
+
+const mergePullRequest = async (PRNumber: number) => {
+  const octokit = new Octokit({
+    auth: process.env.GITHUB_TOKEN,
+  });
+
+  const pulls = await octokit.rest.pulls.merge({
+    owner: "thibautsabot",
+    repo: "banane-plantee-v2",
+    pull_number: PRNumber,
   });
 
   return pulls.data;
@@ -170,4 +186,4 @@ const commitBlogPost = async (body: Body, folder: string) => {
   }
 };
 
-export { commitBlogPost, listPullRequests };
+export { commitBlogPost, listPullRequests, mergePullRequest };

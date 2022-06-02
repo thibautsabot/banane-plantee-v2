@@ -10,7 +10,7 @@ export default async function handler(
   const session = await getSession({ req });
 
   if (session) {
-    const pulls = await listPullRequests();
+    const pulls = await listPullRequests(req.query.id as string | undefined);
 
     res.status(200).json(pulls);
   } else {

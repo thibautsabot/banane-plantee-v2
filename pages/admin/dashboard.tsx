@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
 
 import Link from "next/link";
+import { RestEndpointMethodTypes } from "@octokit/rest";
+
+type PullList = RestEndpointMethodTypes["pulls"]["list"]["response"]["data"];
 
 export default function Dashboard() {
-  const [pendingPosts, setPendingPosts] = useState([]);
-  const [publishedposts, setPublishedposts] = useState([]);
+  const [pendingPosts, setPendingPosts] = useState<string[]>([]);
+  const [publishedposts, setPublishedposts] = useState<string[]>([]);
 
   useEffect(() => {
-    fetch("/api/getPendingPosts")
+    fetch("/api/getPullRequests")
       .then((res) => res.json())
-      .then((data) =>
+      .then((data: PullList) =>
         setPendingPosts(
           data.map((post) => post.head.ref.substring("new-blog-".length))
         )
