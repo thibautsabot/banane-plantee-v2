@@ -141,6 +141,20 @@ const mergePullRequest = async (PRNumber: number) => {
   return pulls.data;
 };
 
+const getPRContent = async (PRNumber: number) => {
+  const octokit = new Octokit({
+    auth: process.env.GITHUB_TOKEN,
+  });
+
+  const pulls = await octokit.rest.pulls.listFiles({
+    owner: "thibautsabot",
+    repo: "banane-plantee-v2",
+    pull_number: PRNumber,
+  });
+
+  return pulls.data;
+};
+
 const commitBlogPost = async (body: Body, folder: string) => {
   const octokit = new Octokit({
     auth: process.env.GITHUB_TOKEN,
@@ -186,4 +200,4 @@ const commitBlogPost = async (body: Body, folder: string) => {
   }
 };
 
-export { commitBlogPost, listPullRequests, mergePullRequest };
+export { commitBlogPost, listPullRequests, mergePullRequest, getPRContent };

@@ -20,6 +20,8 @@ import { useSession } from "next-auth/react";
 import yaml from "js-yaml";
 
 type PullList = RestEndpointMethodTypes["pulls"]["list"]["response"]["data"];
+type PRFiles =
+  RestEndpointMethodTypes["pulls"]["listFiles"]["response"]["data"];
 
 const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
 
@@ -70,11 +72,25 @@ const Post = ({ post }: { post?: PostType }) => {
   const getPullRequest = () => {
     return fetch(`/api/getPullRequests?id=${router.query.slug}`)
       .then((res) => res.json())
-      .then((data: PullList) => {
+      .then(async (data: PullList) => {
         if (data.length > 0) {
-          setPRNumber(data[0].number);
-          // TODO: Get files from PR
-          setValue(post?.fileContent!);
+          const PRNumber = data[0].number;
+          setPRNumber(PRNumber);
+
+          const PRFiles: PRFiles = await fetch(
+            `/api/getPRContent?id=${PRNumber}`
+          ).then((res) => res.json());
+          console.log(PRFiles);
+
+          const PRContent = await Promise.all(
+            PRFiles.map((file) => {
+              return fetch(file.raw_url);
+            })
+          );
+
+          console.log(PRContent);
+
+          // setValue(post?.fileContent!);
         } else {
           setPRNumber(0);
           setValue(post?.fileContent!);

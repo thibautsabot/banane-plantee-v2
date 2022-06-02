@@ -24,8 +24,8 @@ const textToImage = {
           const objectUrl = URL.createObjectURL(file);
           const reader = new FileReader();
           const filename = sanitize(file.name);
-          const slug = document.referrer.substring(
-            document.referrer.indexOf("admin/") + 6
+          const slug = document.location.href.substring(
+            document.location.href.indexOf("admin/") + 6
           );
 
           // Convert file to base64 to send to the API
