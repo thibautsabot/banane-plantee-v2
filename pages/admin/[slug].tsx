@@ -26,8 +26,8 @@ const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
 const Post = ({ post }: { post?: PostType }) => {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const [value, setValue] = useState(post?.fileContent || "");
-  const [PRNumber, setPRNumber] = useState(0);
+  const [value, setValue] = useState("");
+  const [PRNumber, setPRNumber] = useState(-1);
   const [mdxValue, setMdxValue] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -73,8 +73,11 @@ const Post = ({ post }: { post?: PostType }) => {
       .then((data: PullList) => {
         if (data.length > 0) {
           setPRNumber(data[0].number);
+          // TODO: Get files from PR
+          setValue(post?.fileContent!);
         } else {
           setPRNumber(0);
+          setValue(post?.fileContent!);
         }
       });
   };
@@ -94,7 +97,7 @@ const Post = ({ post }: { post?: PostType }) => {
   return (
     <Layout>
       <Container>
-        {router.isFallback ? (
+        {router.isFallback || PRNumber === -1 ? (
           <PostTitle>Loading…</PostTitle>
         ) : (
           <>
