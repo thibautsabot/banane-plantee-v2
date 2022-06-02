@@ -10,9 +10,9 @@ export default async function handler(
   const session = await getSession({ req });
 
   if (session) {
-    const pulls = await mergePullRequest(parseInt(req.query.id as string));
+    const merge = await mergePullRequest(parseInt(req.query.id as string));
 
-    res.status(200).json(pulls);
+    res.status(200).json(merge);
   } else {
     res.status(401);
   }

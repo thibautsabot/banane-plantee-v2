@@ -10,4 +10,4 @@ Commands:
 TODO:
 
 - design
-- update git files on admin changes (create and view PR in a dashboard instead of writing to a file)
+- get file from PR instead of filesystem when editing
