@@ -70,7 +70,7 @@ const createNewCommit = async (
     await octo.git.createCommit({
       owner: "thibautsabot",
       repo: "banane-plantee-v2",
-      message: "Upload blog images",
+      message: "[server-action]: Upload blog images",
       tree: currentTreeSha,
       parents: [currentCommitSha],
     })
@@ -109,10 +109,6 @@ const commitPostImages = async (files: Array<File>) => {
     path.relative(process.cwd(), getFilePath(file))
   );
 
-  console.log(filesBlobs);
-  console.log(currentCommit);
-  console.log(pathsForBlobs);
-
   const newTree = await createNewTree(
     octokit,
     filesBlobs,
@@ -125,9 +121,6 @@ const commitPostImages = async (files: Array<File>) => {
     newTree.sha,
     currentCommit.commitSha
   );
-
-  console.log(newTree);
-  console.log(newCommit);
 
   updateMain(
     octokit,
