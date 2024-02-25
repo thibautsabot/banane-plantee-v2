@@ -100,6 +100,11 @@ const commitPostImages = async (files: Array<File>) => {
       .map(createBlobForFile(octokit))
   );
 
+  if (filesBlobs.length === 0) {
+    console.log("No new images to commit");
+    return
+  }
+
   const pathsForBlobs = files.map((file) =>
     path.relative(process.cwd(), getFilePath(file))
   );
@@ -124,10 +129,10 @@ const commitPostImages = async (files: Array<File>) => {
   console.log(newTree);
   console.log(newCommit);
 
-  // updateMain(
-  //   octokit,
-  //   newCommit.sha
-  // );
+  updateMain(
+    octokit,
+    newCommit.sha
+  );
 };
 
 export { commitPostImages };
