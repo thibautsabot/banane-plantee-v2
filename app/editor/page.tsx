@@ -1,9 +1,12 @@
 "use client";
 
+import Parse, { Element, HTMLReactParserOptions } from "html-react-parser";
 import React, { RefObject, useRef } from "react";
 
 import { Editor } from "@tinymce/tinymce-react";
 import { Editor as TinyMCEEditor } from "tinymce";
+import base64ToId from "../utils/base64toid";
+import { commitPostImages } from "../utils/git";
 
 export default function EditorComponent() {
   const editorRef = useRef<TinyMCEEditor | null>(null);
@@ -12,6 +15,26 @@ export default function EditorComponent() {
       console.log(editorRef.current.getContent());
     }
   };
+
+  const uploadImage = () => {
+    if (editorRef.current) {
+      const content = editorRef.current.getContent();
+      const parser = new DOMParser();
+      const parsedHtml = parser.parseFromString(content, "text/html");
+
+      const images = Array.from(parsedHtml.getElementsByTagName("img")).map(
+        (img) => {
+          return {
+            name: base64ToId(img.src),
+            content: img.src.replace(/^data:image\/\w+;base64,/, ""),
+          };
+        }
+      );
+      console.log(images);
+      commitPostImages(images);
+    }
+  };
+
   return (
     <>
       <Editor
@@ -42,7 +65,6 @@ export default function EditorComponent() {
             "table",
             "image",
             "preview",
-            "help",
             "wordcount",
           ],
           toolbar:
@@ -50,12 +72,14 @@ export default function EditorComponent() {
             "image" +
             "bold italic forecolor | alignleft aligncenter " +
             "alignright alignjustify | bullist numlist outdent indent | " +
-            "removeformat | help",
+            "removeformat",
           content_style:
             "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
         }}
       />
       <button onClick={log}>Log editor content</button>
+      <br />
+      <button onClick={uploadImage}>UPLOAD</button>
     </>
   );
 }
