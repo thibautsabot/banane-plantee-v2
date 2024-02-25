@@ -1,10 +1,9 @@
 "use client";
 
-import Parse, { Element, HTMLReactParserOptions } from "html-react-parser";
-import React, { RefObject, useRef } from "react";
+import React, { useRef } from "react";
 
 import { Editor } from "@tinymce/tinymce-react";
-import { Editor as TinyMCEEditor } from "tinymce";
+import type { Editor as TinyMCEEditor } from "tinymce";
 import base64ToId from "../utils/base64toid";
 import { commitPostImages } from "../utils/git";
 
@@ -41,6 +40,12 @@ export default function EditorComponent() {
         id="tiny-mce-editor"
         tinymceScriptSrc={"/tinymce/tinymce.min.js"}
         onInit={(evt, editor) => (editorRef.current = editor)}
+        onDrop={(evt) => {
+          const file = evt.dataTransfer?.files[0];
+          console.log(file?.name);
+
+          // TODO append name to image in the editor content
+        }}
         initialValue="<p>This is the initial content of the editor.</p>"
         init={{
           height: 500,
