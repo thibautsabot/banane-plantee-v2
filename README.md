@@ -1,3 +1,5 @@
+![Vercel Deploy](https://therealsujitk-vercel-badge.vercel.app/?app=banane-plantee-v2&style=for-the-badge)
+
 ## Usage
 
 - npm run dev
