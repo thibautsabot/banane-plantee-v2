@@ -1,13 +1,9 @@
 "use server";
 
+import { Image } from "./page";
 import { Octokit } from "@octokit/rest";
 import fs from "node:fs";
 import path from "node:path";
-
-interface File {
-  name: string;
-  content: string;
-}
 
 const getLatestCommit = async (octo: Octokit) => {
   let commitSha = "";
@@ -30,7 +26,7 @@ const getLatestCommit = async (octo: Octokit) => {
   };
 };
 
-const createBlobForFile = (octo: Octokit) => async (file: File) => {
+const createBlobForFile = (octo: Octokit) => async (file: Image) => {
   const blobData = await octo.git.createBlob({
     owner: "thibautsabot",
     repo: "banane-plantee-v2",
@@ -84,10 +80,10 @@ const updateMain = (octo: Octokit, commitSha: string) =>
     sha: commitSha,
   });
 
-const getFilePath = (file: File) =>
+const getFilePath = (file: Image) =>
   process.cwd() + `/public/blog/${file.name}.png`;
 
-const commitPostImages = async (files: Array<File>) => {
+const commitPostImages = async (files: Image[]) => {
   const octokit = new Octokit({
     auth: process.env.GITHUB_TOKEN,
   });

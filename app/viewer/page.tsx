@@ -9,9 +9,9 @@ const parserOptions: HTMLReactParserOptions = {
     if (domNode instanceof Element && domNode.name === "img") {
       return (
         <Image
-          src={`/blob/${domNode.attribs.name}.png`}
-          width={parseInt(domNode.attribs.width) || 200}
-          height={parseInt(domNode.attribs.height) || 200}
+          src={domNode.attribs.src}
+          width={parseInt(domNode.attribs.width)}
+          height={parseInt(domNode.attribs.height)}
           alt={domNode.attribs.alt || ""}
         />
       );
@@ -23,7 +23,7 @@ const parserOptions: HTMLReactParserOptions = {
 
 export default function Viewer() {
   const content =
-    "<img name='favicon' width='300' height='300' alt='A cool image' />"; // TODO: get it from the DB
+    '<p>Exemple de re<img id="favicon" src="/blog/favicon.png" width="119" height="119">cette cool</p>'; // TODO: get it from the DB
   const test = Parse(content, parserOptions);
 
   return (
