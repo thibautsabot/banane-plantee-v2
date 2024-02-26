@@ -1,0 +1,18 @@
+generator client {
+  provider = "prisma-client-js"
+}
+ 
+datasource db {
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+// CREATE TABLE Post(id serial PRIMARY KEY, content TEXT, tag TEXT, created_at TIMESTAMP);
+ 
+model Post {
+  id        Int      @id @default(autoincrement())
+  content   String
+  tag       String
+  createdAt DateTime @default(now())
+}
