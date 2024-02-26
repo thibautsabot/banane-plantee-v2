@@ -1,9 +1,5 @@
-"use server";
-
 import { Image } from "./editor";
 import { Octokit } from "@octokit/rest";
-import fs from "node:fs";
-import path from "node:path";
 
 const getLatestCommit = async (octo: Octokit) => {
   let commitSha = "";
@@ -82,30 +78,20 @@ const updateMain = (octo: Octokit, commitSha: string) =>
     sha: commitSha,
   });
 
-const getFilePath = (file: Image) =>
-  process.cwd() + `/public/blog/${file.name}.png`;
+const getFilePath = (file: Image) => `public/blog/${file.name}.png`;
 
 const commitPostImages = async (files: Image[]) => {
   const octokit = new Octokit({
-    auth: process.env.GITHUB_TOKEN,
+    // The token is read client side, but it can only be used in editor mode which is authenticated
+    auth: process.env.NEXT_PUBLIC_GITHUB_TOKEN,
   });
 
   const currentCommit = await getLatestCommit(octokit);
 
   const filesBlobs = await Promise.all(
-    files
-      .filter((file) => !fs.existsSync(getFilePath(file)))
-      .map(createBlobForFile(octokit))
+    files.map(createBlobForFile(octokit))
   );
-
-  if (filesBlobs.length === 0) {
-    console.log("No new images to commit");
-    return
-  }
-
-  const pathsForBlobs = files.map((file) =>
-    path.relative(process.cwd(), getFilePath(file))
-  );
+  const pathsForBlobs = files.map((file) => getFilePath(file))
 
   const newTree = await createNewTree(
     octokit,
