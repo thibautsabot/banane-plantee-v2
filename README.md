@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Usage
 
-## Getting Started
+- npm run dev
 
-First, run the development server:
+or
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- npm run build
+- npm run start
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## How it works
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The editor mode allows you to create and edit blog posts as much as you want.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Publishing a post will add an entry in the `Post` table.
+You can add a title, slug, a tag and a thumbnail to your post (the date is automatically added).
 
-## Learn More
+When you create new images and publish the post, a new git commit will be created to push the images.
+It allows us to not worry about the image and its size as it won't be stored in the DB or passed in the requests.
 
-To learn more about Next.js, take a look at the following resources:
+We replace the base64 source by the path to the `public` folder (it works since it has been pushed to the filesystem).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+On the viewer side, `img` tags are replaced by the `<Image>` component.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Why?
 
-## Deploy on Vercel
+Total revamp of the [previous iteration](https://github.com/thibautsabot/banane-plantee) that was powered by Gatsby and Netlify.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The Netlify CMS was nice but a bit buggy and it was hard to customize.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Gatsby was painful to maintain and the build times were getting crazy.
+
+Finally, while Markdown is super easy to handle, the capabilites are limited (it was the [original idea](https://github.com/thibautsabot/banane-plantee-v2/tree/save-oldv2))
+
+---
+
+This new version uses NextJS (with app router) and was started from scratch.
+
+Blog content are stored inside a [Postgres DB](https://postgresql.org/) and we query it through [Prisma](https://prisma.io/).
+The editor mode features a self-hosted [TinyMCE](https://tiny.cloud/) editor and exports `HTML`.
+
+You can enable a lot of [plugins](https://tiny.cloud/docs/tinymce/latest/plugins/) and create your own.
+
+A custom image handler was added to benefit from [`next/image`](https://nextjs.org/docs/pages/building-your-application/optimizing/images).
+
+## TODO :
+
+- Editor auth wall
+- List blog posts
+- Create slugs
+- Import old posts
+- Create styles
