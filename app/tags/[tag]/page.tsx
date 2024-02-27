@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { getPostsByTag } from "@/prisma/post";
 
-export default async function Tags({ params }: { params: { tags: string } }) {
-  const posts = await getPostsByTag(params.tags);
+export default async function Tags({ params }: { params: { tag: string } }) {
+  const posts = await getPostsByTag(params.tag);
 
   console.log("VIEWVER: get all post by tags", posts);
 

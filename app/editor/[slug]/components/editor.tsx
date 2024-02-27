@@ -27,7 +27,7 @@ export default function EditorComponent({
         const base64 = await blobToBase64(file);
 
         editorRef.current?.insertContent(
-          `<img id="${slugify(`${Date.now()}-${file.name}`)}" src="${
+          `<img id="${slugify(`${file.name}`)}" src="${
             base64.content
           }" width="${base64.width}" height="${base64.height}" />`
         );
