@@ -1,4 +1,4 @@
-import { Image } from "./editor";
+import { Image } from "../form";
 import { Octokit } from "@octokit/rest";
 
 const getLatestCommit = async (octo: Octokit) => {

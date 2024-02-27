@@ -1,51 +1,21 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { MutableRefObject } from "react";
 
 import { Editor } from "@tinymce/tinymce-react";
 import type { Editor as TinyMCEEditor } from "tinymce";
-import blobToBase64 from "../utils/blobToBase64";
-import { commitPostImages } from "./git";
-import { createPost } from "@/prisma/post";
-import slugify from "../utils/slugify";
-
-export interface Image {
-  name: string;
-  content: string;
-}
+import blobToBase64 from "../../../utils/blobToBase64";
+import slugify from "../../../utils/slugify";
+import { useRouter } from "next/router";
 
 export default function EditorComponent({
   initialContent = "",
+  editorRef,
 }: {
   initialContent: string;
+  editorRef: MutableRefObject<TinyMCEEditor | null>;
 }) {
-  const editorRef = useRef<TinyMCEEditor | null>(null);
-
-  const uploadImage = () => {
-    if (editorRef.current) {
-      const content = editorRef.current.getContent();
-      const parser = new DOMParser();
-      const parsedHtml = parser.parseFromString(content, "text/html");
-      const images: Image[] = [];
-
-      [...parsedHtml.getElementsByTagName("img")].forEach((img) => {
-        const originalImg = img.cloneNode(true) as HTMLImageElement;
-
-        if (originalImg.src.includes("data:image")) {
-          img.src = `/blog/${originalImg.id}.png`;
-          images.push({
-            name: originalImg.id,
-            content: originalImg.src.replace(/^data:image\/\w+;base64,/, ""),
-          });
-        }
-      });
-      if (images.length) {
-        commitPostImages(images);
-      }
-      console.log(parsedHtml.body.innerHTML);
-      createPost(parsedHtml.body.innerHTML);
-    }
-  };
+  const router = useRouter();
 
   const onDropEvent = async (evt: DragEvent) => {
     const files = evt.dataTransfer?.files;
@@ -59,11 +29,10 @@ export default function EditorComponent({
       [...files].forEach(async (file) => {
         const base64 = await blobToBase64(file);
 
-        // TODO: pass the post id to the slugify function
         editorRef.current?.insertContent(
-          `<img id="${slugify(file.name)}" src="${base64.content}" width="${
-            base64.width
-          }" height="${base64.height}" />`
+          `<img id="${slugify(`${Date.now()}-${file.name}`)}" src="${
+            base64.content
+          }" width="${base64.width}" height="${base64.height}" />`
         );
       });
     }
@@ -110,11 +79,6 @@ export default function EditorComponent({
             "removeformat",
         }}
       />
-      <button onClick={() => console.log(editorRef.current?.getContent())}>
-        Log editor content
-      </button>
-      <br />
-      <button onClick={uploadImage}>UPLOAD</button>
     </>
   );
 }

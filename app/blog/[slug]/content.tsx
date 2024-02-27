@@ -22,7 +22,7 @@ const parserOptions: HTMLReactParserOptions = {
 };
 
 export default function Content({ content }: { content: string }) {
-  const test = Parse(content, parserOptions);
+  const parsedContent = Parse(content, parserOptions);
 
-  return <>{test}</>;
+  return <>{parsedContent}</>;
 }
