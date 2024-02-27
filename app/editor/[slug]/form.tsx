@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 
 import EditorComponent from "./components/editor";
+import { Post } from "@prisma/client";
 import type { Editor as TinyMCEEditor } from "tinymce";
 import { commitPostImages } from "./components/git";
 import { createPost } from "@/prisma/post";
@@ -13,13 +14,10 @@ export interface Image {
   content: string;
 }
 
-export default function EditorForm({
-  initialContent,
-}: {
-  initialContent: string;
-}) {
+export default function EditorForm({ post }: { post: Post | null }) {
   const editorRef = useRef<TinyMCEEditor | null>(null);
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState(post?.title || "");
+  const [tag, setTag] = useState(post?.tag || "dessert");
 
   const uploadImageAndMutateHTML = (parsedHtml: Document, images: Image[]) => {
     if (editorRef.current) {
@@ -50,37 +48,70 @@ export default function EditorForm({
 
       uploadImageAndMutateHTML(parsedHtml, images);
 
-      console.log(e);
-      console.log(parsedHtml.body.innerHTML);
-
-      //   createPost({
-      //     title: e.,
-      //     content: parsedHtml.body.innerHTML,
-      //   });
+      createPost({
+        title,
+        tag,
+        slug: slugify(title),
+        thumbnail: "",
+        content: parsedHtml.body.innerHTML,
+      });
     }
   };
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="m-2 flex flex-col">
+        <label
+          className="block text-sm font-medium text-gray-900 dark:text-white"
+          htmlFor="title"
+        >
+          Titre :
+        </label>
         <input
+          className="w-1/3 mb-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           id="title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-        >
-          {title}
-        </input>
-        <input disabled id="slug">
-          {slugify(title)}
-        </input>
-        <EditorComponent
-          initialContent={initialContent}
-          editorRef={editorRef}
         />
-        <select>
-          <option>testTag</option>
+        <br />
+        <label
+          className="block text-sm font-medium text-gray-900 dark:text-white"
+          htmlFor="slug"
+        >
+          URL :
+        </label>
+        <input
+          className="w-1/3 mb-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          disabled
+          id="slug"
+          value={slugify(title)}
+        />
+        <br />
+        <label
+          className="block text-sm font-medium text-gray-900 dark:text-white"
+          htmlFor="tag"
+        >
+          Tag :
+        </label>
+        <select
+          className="w-fit mb-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          id="tag"
+          value={tag}
+          onChange={(e) => setTag(e.target.value)}
+        >
+          <option>petitdej</option>
+          <option>dessert</option>
+          <option>antigaspi</option>
         </select>
-        <button type="submit">Save</button>
+        <p className="mb-2">Contenu :</p>
+        <EditorComponent initialContent={post?.content} editorRef={editorRef} />
+
+        <button
+          className="mt-4 w-1/5 focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+          type="submit"
+        >
+          Save
+        </button>
       </form>
     </div>
   );

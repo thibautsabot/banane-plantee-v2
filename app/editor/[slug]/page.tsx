@@ -19,7 +19,7 @@ export default async function EditorSlug({
 
   return (
     <>
-      <EditorForm initialContent={post.content} />
+      <EditorForm post={post} />
     </>
   );
 }

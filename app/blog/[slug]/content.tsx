@@ -3,6 +3,7 @@
 import Parse, { Element, HTMLReactParserOptions } from "html-react-parser";
 
 import Image from "next/image";
+import { Post } from "@prisma/client";
 
 const parserOptions: HTMLReactParserOptions = {
   replace: (domNode) => {
@@ -21,8 +22,8 @@ const parserOptions: HTMLReactParserOptions = {
   },
 };
 
-export default function Content({ content }: { content: string }) {
-  const parsedContent = Parse(content, parserOptions);
+export default function Content({ post }: { post: Post }) {
+  const parsedContent = Parse(post.content, parserOptions);
 
   return <>{parsedContent}</>;
 }

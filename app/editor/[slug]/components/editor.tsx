@@ -6,17 +6,14 @@ import { Editor } from "@tinymce/tinymce-react";
 import type { Editor as TinyMCEEditor } from "tinymce";
 import blobToBase64 from "../../../utils/blobToBase64";
 import slugify from "../../../utils/slugify";
-import { useRouter } from "next/router";
 
 export default function EditorComponent({
   initialContent = "",
   editorRef,
 }: {
-  initialContent: string;
+  initialContent?: string;
   editorRef: MutableRefObject<TinyMCEEditor | null>;
 }) {
-  const router = useRouter();
-
   const onDropEvent = async (evt: DragEvent) => {
     const files = evt.dataTransfer?.files;
 

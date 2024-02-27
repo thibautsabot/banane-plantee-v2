@@ -4,7 +4,8 @@ import { Post, PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export async function createPost({ slug, content, title, tag }: Post) {
+export async function createPost({ slug, content, title, tag }: Omit<Post, 'id' | 'createdAt'>) {
+  console.log("createPost", { slug, content, title, tag })
   await prisma.post.create({
     data: {
       content,
@@ -17,7 +18,7 @@ export async function createPost({ slug, content, title, tag }: Post) {
 }
 
 export async function getPostBySlug(slug: string) {
-  return await prisma.post.findUniqueOrThrow({ where: { slug }})
+  return await prisma.post.findUnique({ where: { slug }})
 }
 
 export async function getPostsByTag(tag: string) {
