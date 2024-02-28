@@ -4,8 +4,6 @@ import { getAllPosts } from "@/prisma/post";
 export default async function Editor() {
   const posts = await getAllPosts();
 
-  console.log("EDITOR: get all posts", posts);
-
   return (
     <div>
       <h1>Editor</h1>

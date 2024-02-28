@@ -6,6 +6,7 @@ const prisma = new PrismaClient();
 
 export async function createPost({ slug, content, title, tag }: Omit<Post, 'id' | 'createdAt'>) {
   console.log("createPost", { slug, content, title, tag })
+  // TODO: Update post if slug already exists
   await prisma.post.create({
     data: {
       content,

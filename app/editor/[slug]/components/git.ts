@@ -23,14 +23,12 @@ const getLatestCommit = async (octo: Octokit) => {
 };
 
 const createBlobForFile = (octo: Octokit) => async (file: Image) => {
-  console.log("Creating blob for file", file);
   const blobData = await octo.git.createBlob({
     owner: "thibautsabot",
     repo: "banane-plantee-v2",
     content: file.content,
     encoding: "base64",
   });
-  console.log("Blob created for file", file.name);
   return blobData.data;
 };
 

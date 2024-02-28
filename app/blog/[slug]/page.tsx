@@ -13,8 +13,6 @@ export default async function BlogPost({
     return notFound();
   }
 
-  console.log("BLOG: get post by slug", post);
-
   return (
     <div>
       <h1>Viewer</h1>

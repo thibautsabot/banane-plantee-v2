@@ -15,8 +15,6 @@ export default async function EditorSlug({
   // It allows us to not store the base64 in the db and in the requests.
   const post = await getPostBySlug(params.slug);
 
-  console.log("EDITOR: get post by slug", post);
-
   return (
     <>
       <EditorForm post={post} />

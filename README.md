@@ -47,7 +47,6 @@ A custom image handler was added to benefit from [`next/image`](https://nextjs.o
 ## TODO :
 
 - Editor auth wall
-- List blog posts
-- Create slugs
 - Import old posts
 - Create styles
+- Search
