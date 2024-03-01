@@ -19,7 +19,6 @@ export default function RootLayout({
     <html lang="fr">
       <body>
         <Header />
-        <Banner />
         <div className="max-w-[1344px] mx-auto mb-8">{children}</div>
         <Footer />
       </body>

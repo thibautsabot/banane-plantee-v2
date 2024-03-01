@@ -10,9 +10,10 @@ const config: Config = {
     extend: {
       colors: {
         candiceBrown: '#694c3c',
+        candiceText: '#4a4a4a',
       }
     },
   },
-  plugins: [],
+  plugins: []
 };
 export default config;

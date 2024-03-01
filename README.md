@@ -48,5 +48,6 @@ A custom image handler was added to benefit from [`next/image`](https://nextjs.o
 
 - Editor auth wall
 - Import old posts
-- Create styles
 - Search
+- Burger Menu
+- Contact Modale

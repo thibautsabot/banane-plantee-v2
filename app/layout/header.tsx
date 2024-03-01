@@ -44,6 +44,9 @@ export default function Header() {
           <Link className={itemStyle} href="/tags/antigaspi">
             Anti-gaspi
           </Link>
+          <Link className={itemStyle} href="/presentation">
+            Présentation
+          </Link>
           {/* <SearchQuery /> */}
         </div>
       </div>

@@ -15,7 +15,6 @@ export default async function BlogPost({
 
   return (
     <div>
-      <h1>Viewer</h1>
       <Content post={post} />
     </div>
   );

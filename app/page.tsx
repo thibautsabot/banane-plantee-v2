@@ -24,6 +24,7 @@ export default async function Home() {
         et sur les raisons de la création de ce blog, n&apos;hésitez pas à vous
         rendre dans la partie présentation.
       </p>
+      <br />
       <p>
         Bonne visite sur <strong>Bananeplantée !</strong>
       </p>
