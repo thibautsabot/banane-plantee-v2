@@ -1,6 +1,6 @@
 "use client";
 
-import { WORDINGS, Wording, isKnownSlug } from "./utils/slugToWording";
+import { WORDINGS, isKnownSlug } from "../utils/slugToWording";
 
 import Image from "next/image";
 import { usePathname } from "next/navigation";

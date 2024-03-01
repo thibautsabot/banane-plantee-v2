@@ -3,10 +3,21 @@ import Link from "next/link";
 import { getPostsByTag } from "@/prisma/post";
 
 const getExcerpt = (content: string) => {
-  return content
-    .substring(0, 500)
-    .replace(/<br\/?>/, "\n")
-    .replace(/<\/?[^>]+(>|$)/g, "");
+  const isLong = content.length > 700;
+  if (isLong) {
+    return (
+      content
+        .substring(0, isLong ? content.lastIndexOf(" ", 700) : 700)
+        .replace(/<br\/?>/, "\n")
+        .replace(/<\/?[^>]+(>|$)/g, "")
+        .replace(/&nbsp;/g, " ") + "..."
+    );
+  } else {
+    return content
+      .replace(/<br\/?>/, "\n")
+      .replace(/<\/?[^>]+(>|$)/g, "")
+      .replace(/&nbsp;/g, " ");
+  }
 };
 
 export default async function Tags({ params }: { params: { tag: string } }) {
@@ -21,11 +32,11 @@ export default async function Tags({ params }: { params: { tag: string } }) {
         >
           <header className="flex mb-4">
             <Image
-              className="mr-8"
-              src="/header-outline.png"
+              className="mr-8 rounded"
+              src="/blog/blinis-couv.png"
               alt=""
-              width={200}
-              height={200}
+              width={180}
+              height={180}
             />
             <div className="flex flex-col">
               <Link
@@ -35,10 +46,15 @@ export default async function Tags({ params }: { params: { tag: string } }) {
               >
                 {post.title}
               </Link>
-              {post.createdAt.toLocaleDateString()}
+              {post.createdAt.toLocaleDateString("fr-FR", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
             </div>
           </header>
           <div
+            className="mb-4"
             dangerouslySetInnerHTML={{
               __html: getExcerpt(post.content),
             }}

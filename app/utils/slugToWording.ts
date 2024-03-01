@@ -10,6 +10,7 @@ export const WORDINGS = {
     'antigaspi': 'Anti-gaspi',
     'antiinflam': 'Anti-inflammatoire',
     'zerodechet': 'Zéro Déchet',
+    '/': 'Accueil',
 };
 
 export type Wording = keyof typeof WORDINGS;
