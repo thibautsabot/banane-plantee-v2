@@ -50,4 +50,4 @@ A custom image handler was added to benefit from [`next/image`](https://nextjs.o
 - Import old posts
 - Search
 - Burger Menu
-- Contact Modale
+- Contact Modal
