@@ -47,6 +47,5 @@ A custom image handler was added to benefit from [`next/image`](https://nextjs.o
 ## TODO :
 
 - Import old posts
-- Search
 - Burger Menu
 - Contact Modal

@@ -3,8 +3,8 @@ import { writeFileSync } from "fs";
 
 const generateSearchIndex = async () => {
   const posts = await getAllPosts();
-  const searchIndex = posts.map((post) => ({
-    id: post.id,
+  const searchIndex = posts.map((post, i) => ({
+    id: i,
     title: post.title,
   }));
 

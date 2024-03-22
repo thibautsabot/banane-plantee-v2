@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "generateIndex": "node --import tsx app/utils/generateSearchIndex.ts",
+    "generateIndex:local": "node --import tsx --env-file .env.local app/utils/generateSearchIndex.ts",
     "postinstall": "prisma generate"
   },
   "dependencies": {
