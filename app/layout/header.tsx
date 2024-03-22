@@ -3,6 +3,17 @@ import Link from "next/link";
 
 const itemStyle = "px-3 py-2";
 
+// const index = new FlexSearch.Index({
+//   tokenize: "full",
+// });
+// searchIndex.forEach((post) => {
+//   index.add(post.id, post.title);
+// })
+
+// const res = index.search("ma");
+
+// console.log(index);
+
 export default function Header() {
   return (
     <nav
