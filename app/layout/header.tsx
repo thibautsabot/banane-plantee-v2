@@ -48,9 +48,9 @@ export default function Header() {
           <Link className={itemStyle} href="/presentation">
             Présentation
           </Link>
-          <Search />
         </div>
       </div>
+      <Search />
     </nav>
   );
 }

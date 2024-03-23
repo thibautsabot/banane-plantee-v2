@@ -1,3 +1,4 @@
+import Banner from "./layout/banner";
 import Image from "next/image";
 import Link from "next/link";
 import { getAllPosts } from "@/prisma/post";
@@ -7,6 +8,7 @@ export default async function Home() {
 
   return (
     <main className="w-3/4 mx-auto">
+      <Banner />
       <h1 className="my-4 text-4xl">Bienvenue dans ma cuisine !</h1>
       <p>
         Passionnée de cuisine depuis des années, je réalise de nombreuses

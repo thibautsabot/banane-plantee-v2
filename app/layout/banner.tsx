@@ -9,7 +9,7 @@ export default function Banner() {
   const pathname = usePathname().replace("/tags/", "");
 
   return (
-    <div role="banner" className="w-3/4 m-auto flex h-[200px] relative">
+    <div role="banner" className="m-auto flex h-[200px] relative">
       <Image
         priority
         fill
