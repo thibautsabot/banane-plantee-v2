@@ -8,17 +8,19 @@ export default function Header() {
     <nav
       role="navigation"
       aria-label="main-navigation"
-      className="mb-8 bg-candiceBrown text-white flex items-center justify-center min-h-16"
+      className="mb-8 bg-candiceBrown text-white block lg:flex items-center justify-center min-h-16"
     >
-      <div className="px-3 py-2§">
+      <div className="flex justify-center pt-4 px-3 py-2 lg:pt-2">
         <Link href="/" title="Logo">
           <Image width={150} height={50} src="/header-outline.png" alt="Logo" />
         </Link>
       </div>
-      <div className="flex flex-col">
-        <Nav />
+      <div className="flex items-center justify-center">
+        <div className="flex flex-col">
+          <Nav />
+        </div>
+        <Search />
       </div>
-      <Search />
     </nav>
   );
 }

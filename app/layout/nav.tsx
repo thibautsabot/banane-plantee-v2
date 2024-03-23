@@ -1,8 +1,10 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
+
 import Link from "next/link";
+import useOnClickOutside from "../utils/useOnClickOutside";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
 
 const links = [
   {
@@ -46,16 +48,24 @@ const links = [
 export default function Nav() {
   const [isBurgerMenuOpen, setIsBurgerMenuOpen] = useState(false);
   const [isArticleOpen, setIsArticleOpen] = useState(false);
+  const burgerRef = useRef<HTMLDivElement | null>(null);
+  const articleRef = useRef<HTMLDivElement | null>(null);
   const pathname = usePathname();
 
-  // TODO: Handle click outside
+  useOnClickOutside(articleRef, () => setIsArticleOpen(false));
+
+  useEffect(() => {
+    setIsBurgerMenuOpen(false);
+  }, [pathname]);
+
   return (
     <>
       <div
+        ref={burgerRef}
         onClick={() => setIsBurgerMenuOpen(!isBurgerMenuOpen)}
         className={`${
           isBurgerMenuOpen ? "mx-auto" : "mx-8"
-        } my-8 w-8 h-8 flex lg:hidden justify-around flex-col flex-nowrap z-10`}
+        } m-6 w-8 h-8 flex lg:hidden justify-around flex-col flex-nowrap z-10`}
       >
         <div className="w-8 h-1 rounded bg-white" />
         <div className="w-8 h-1 rounded bg-white" />
@@ -78,37 +88,43 @@ export default function Nav() {
           </Link>
         ))}
         <div
+          ref={articleRef}
           className={`${
             isBurgerMenuOpen ? "my-4" : "mx-4"
-          } flex justify-center align-middle`}
+          } flex justify-center flex-col`}
           onClick={() => setIsArticleOpen(!isArticleOpen)}
         >
-          <p
-            className={
-              pathname === "/zero-dechet" || pathname === "/presentation"
-                ? "underline"
-                : ""
-            }
-          >
-            Article
-          </p>
-          <span
-            className={`ml-4 border-2 border-white border-r-0 border-t-0
+          <div className="flex justify-center">
+            <p
+              className={
+                pathname === "/zero-dechet" || pathname === "/presentation"
+                  ? "underline"
+                  : ""
+              }
+            >
+              Article
+            </p>
+            <span
+              className={`ml-4 border-2 border-white border-r-0 border-t-0
           block h-3 w-3 z-10 origin-center ${
             isArticleOpen ? "rotate-[135deg] mt-2" : "-rotate-45  mt-1"
           }`}
-          />
-        </div>
-        {isArticleOpen && (
-          <div className="z-10 flex flex-col lg:absolute lg:top-full lg:right-0 lg:bg-candiceBrown px-4">
-            <Link className="pb-2" href="/presentation">
-              Présentation
-            </Link>
-            <Link className="pb-2" href="/zero-dechet">
-              Zéro Déchet
-            </Link>
+            />
           </div>
-        )}
+          {isArticleOpen && (
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="z-10 mt-4 flex flex-col lg:mt-0 lg:absolute lg:top-full lg:right-0 lg:bg-candiceBrown px-4"
+            >
+              <Link className="pb-2" href="/presentation">
+                Présentation
+              </Link>
+              <Link className="pb-2" href="/zero-dechet">
+                Zéro Déchet
+              </Link>
+            </div>
+          )}
+        </div>
       </div>
     </>
   );

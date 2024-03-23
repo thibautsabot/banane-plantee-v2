@@ -1,15 +1,17 @@
 "use client";
 
+import { useRef, useState } from "react";
+
 import FlexSearch from "flexsearch";
 import Image from "next/image";
 import searchIndex from "../utils/searchIndex.json";
-import { useState } from "react";
+import useOnClickOutside from "../utils/useOnClickOutside";
 
 const getHighlightedText = (text: string, highlight: string) => {
   const parts = text.split(new RegExp(`(${highlight})`, "gi"));
 
   return (
-    <li className="text-black list-none text-center">
+    <li key={text} className="text-black list-none text-center">
       {parts.map((part, i) => (
         <span
           key={i}
@@ -37,9 +39,13 @@ searchIndex.forEach((post) => {
 export default function Search() {
   const [value, setValue] = useState("");
   const [matches, setMacthes] = useState<string[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const resultRef = useRef<HTMLDivElement | null>(null);
+
+  useOnClickOutside(resultRef, () => setIsOpen(false));
 
   return (
-    <div>
+    <div ref={resultRef}>
       <div className="bg-white flex rounded-full w-[200px] px-2">
         <Image
           alt="recherche"
@@ -57,12 +63,15 @@ export default function Search() {
             setValue(e.target.value);
             const res = index.search(e.target.value);
 
+            if (res.length) {
+              setIsOpen(true);
+            }
             setMacthes(res.map((id) => searchIndex[Number(id)].title));
           }}
         />
       </div>
-      {!!matches.length && (
-        <ul className="z-10 absolute mt-3 p-2 bg-white w-[400px] before-content-[''] before:border-solid before:z-10 before:absolute before:-top-[9px] before:left-[10px] before:border-b-[10px] before:border-b-white before:border-l-[10px] before:border-l-transparent before:border-r-[10px] before:border-r-transparent">
+      {!!matches.length && isOpen && (
+        <ul className="z-10 absolute mt-3 p-2 bg-white w-[220px] md:w-[400px] before-content-[''] before:border-solid before:z-10 before:absolute before:-top-[9px] before:left-[10px] before:border-b-[10px] before:border-b-white before:border-l-[10px] before:border-l-transparent before:border-r-[10px] before:border-r-transparent">
           {matches.map((match) => getHighlightedText(match, value))}
         </ul>
       )}
