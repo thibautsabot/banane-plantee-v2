@@ -6,6 +6,7 @@ const generateSearchIndex = async () => {
   const searchIndex = posts.map((post, i) => ({
     id: i,
     title: post.title,
+    slug: post.slug,
   }));
 
   writeFileSync("./app/utils/searchIndex.json", JSON.stringify(searchIndex))

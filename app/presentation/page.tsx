@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function Presentation() {
   return (
     <div className="[&>p]:my-8 w-3/4 mx-auto antialiased text-candiceText">
@@ -40,6 +42,13 @@ export default function Presentation() {
         N&apos;hésitez donc pas à vous balader sur{" "}
         <strong>Bananeplantée !</strong>
       </p>
+      <Image
+        className="mx-auto"
+        alt=""
+        src="/candice.jpg"
+        width={350}
+        height={260}
+      />
     </div>
   );
 }
