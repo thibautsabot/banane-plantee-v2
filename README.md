@@ -19,7 +19,10 @@ You can add a title, slug, a tag and a thumbnail to your post (the date is autom
 When you create new images and publish the post, a new git commit will be created to push the images.
 It allows us to not worry about the image and its size as it won't be stored in the DB or passed in the requests.
 
-We replace the base64 source by the path to the `public` folder (it works since it has been pushed to the filesystem).
+Since we are using vercel that creates a new environement each deploy, we can't really add the images to the filesystem.
+We could upload them to a CDN, but for now it's nice to keep them in the repo in case we switch providers.
+
+We replace the base64 source by the path to the `public` folder (it works since it has been pushed).
 
 On the viewer side, `img` tags are replaced by the `<Image>` component.
 
@@ -46,5 +49,5 @@ A custom image handler was added to benefit from [`next/image`](https://nextjs.o
 
 ## TODO :
 
-- Import old posts
+- Static generation and manual invalidate
 - A11y
