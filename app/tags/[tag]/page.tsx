@@ -36,7 +36,7 @@ export default async function Tags({ params }: { params: { tag: string } }) {
             <header className="flex mb-4">
               <Image
                 className="mr-8 rounded"
-                src="/blog/blinis-couv.png"
+                src={post.thumbnail}
                 alt=""
                 width={180}
                 height={180}

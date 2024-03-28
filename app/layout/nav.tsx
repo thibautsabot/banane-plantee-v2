@@ -81,7 +81,7 @@ export default function Nav() {
             key={link.href}
             className={`px-3 py-2 ${
               pathname === link.href ? "underline" : ""
-            } `}
+            } hover:underline`}
             href={link.href}
           >
             {link.text}
@@ -94,7 +94,7 @@ export default function Nav() {
           } flex justify-center flex-col`}
           onClick={() => setIsArticleOpen(!isArticleOpen)}
         >
-          <div className="flex justify-center">
+          <div className="flex hover:underline justify-center">
             <p
               className={
                 pathname === "/zero-dechet" || pathname === "/presentation"
@@ -116,10 +116,10 @@ export default function Nav() {
               onClick={(e) => e.stopPropagation()}
               className="z-10 mt-4 flex flex-col lg:mt-0 lg:absolute lg:top-full lg:right-0 lg:bg-candiceBrown px-4"
             >
-              <Link className="pb-2" href="/presentation">
+              <Link className="hover:underline pb-2" href="/presentation">
                 Présentation
               </Link>
-              <Link className="pb-2" href="/zero-dechet">
+              <Link className="hover:underline pb-2" href="/zero-dechet">
                 Zéro Déchet
               </Link>
             </div>

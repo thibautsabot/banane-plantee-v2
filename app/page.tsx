@@ -31,22 +31,22 @@ export default async function Home() {
         Bonne visite sur <strong>Bananeplantée !</strong>
       </p>
       <h1 className="my-4 text-4xl">Derniers articles</h1>
-      <div className="flex flex-wrap">
+      <div className="flex flex-wrap flex-col lg:grid lg:grid-cols-3 lg:gap-4">
         {posts.map((post) => {
           return (
             <article
               key={post.id}
-              className="flex-none bg-[#efefef] rounded text-[#4a4a4a] p-6 my-2 lg:mx-4 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)]"
+              className="flex flex-col justify-between overflow-hidden break-words flex-none bg-[#efefef] rounded text-[#4a4a4a] p-6 my-2 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)]"
             >
               <Image
-                className="rounded"
-                src="/blog/blinis-couv.png"
+                className="rounded h-[250px] object-cover"
+                src={post.thumbnail}
                 alt=""
                 width={250}
                 height={250}
               />
               <Link
-                className="text-candiceBrown text-3xl"
+                className="text-candiceBrown hover:text-[#a68563] line-clamp-3 text-2xl"
                 href={`/blog/${post.slug}`}
                 key={post.id}
               >

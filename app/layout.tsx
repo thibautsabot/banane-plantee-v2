@@ -1,6 +1,5 @@
 import "./globals.css";
 
-import Banner from "./layout/banner";
 import Footer from "./layout/footer";
 import Header from "./layout/header";
 import type { Metadata } from "next";
