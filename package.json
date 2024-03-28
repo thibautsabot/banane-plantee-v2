@@ -9,6 +9,7 @@
     "lint": "next lint",
     "generateIndex": "node --import tsx app/utils/generateSearchIndex.ts",
     "generateIndex:local": "node --import tsx --env-file .env.local app/utils/generateSearchIndex.ts",
+    "importOldPOst": "node --import tsx --env-file .env.local app/utils/v1PostTov2.ts",
     "postinstall": "prisma generate"
   },
   "dependencies": {
@@ -28,10 +29,12 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/showdown": "^2.0.6",
     "autoprefixer": "^10.4.19",
     "eslint": "^8",
     "eslint-config-next": "14.1.4",
     "postcss": "^8",
+    "showdown": "^2.1.0",
     "tailwindcss": "^3.4.1",
     "tsx": "^4.7.1",
     "typescript": "^5"

@@ -4,13 +4,12 @@ import { getAllPosts } from "@/prisma/post";
 export default async function Editor() {
   const posts = await getAllPosts();
 
-  console.log(posts);
   return (
     <div>
       <h1>Edition</h1>
       {posts.map((post) => (
         <Link
-          className="flex items-center items-baseline"
+          className="flex items-center"
           href={`/editor/${post.slug}`}
           key={post.id}
         >

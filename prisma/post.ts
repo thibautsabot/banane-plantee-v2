@@ -4,8 +4,8 @@ import { Post, PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export async function createPost({ slug, content, title, tag }: Omit<Post, 'id' | 'createdAt'>) {
-  console.log("createPost", { slug, content, title, tag })
+export async function createPost({ slug, content, title, tag, thumbnail, createdAt }: Partial<Post> & Pick<Post, 'slug' | 'content' | 'title' | 'tag'>) {
+  console.log("createPost", { slug, content, title, tag, thumbnail, createdAt})
   // TODO: Update post if slug already exists
   await prisma.post.create({
     data: {
@@ -13,7 +13,8 @@ export async function createPost({ slug, content, title, tag }: Omit<Post, 'id' 
       title,
       tag,
       slug,
-      thumbnail: "",
+      thumbnail: thumbnail || '',
+      createdAt,
     },
   });
 }
