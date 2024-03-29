@@ -2,7 +2,9 @@
 
 import { revalidatePath } from "next/cache";
 
-export async function revalidatePost(page: string) {
-  console.log(`Revalidating post ${page}`);
-  revalidatePath(page);
+export async function revalidatePost(slug: string) {
+  const pagePath = `/blog/${slug}`;
+
+  console.log(`Revalidating post ${pagePath}`);
+  revalidatePath(pagePath);
 }

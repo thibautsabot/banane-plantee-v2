@@ -50,6 +50,4 @@ A custom image handler was added to benefit from [`next/image`](https://nextjs.o
 
 ## TODO :
 
-- Static generation and manual invalidate https://nextjs.org/docs/app/api-reference/functions/generate-static-params
-- A11y
 - Thumbnail edit
