@@ -1,6 +1,14 @@
 import Content from "./content";
-import { getPostBySlug } from "@/prisma/post";
+import { getAllPosts, getPostBySlug } from "@/prisma/post";
 import { notFound } from "next/navigation";
+
+export async function generateStaticParams() {
+  const posts = await getAllPosts();
+
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+}
 
 export default async function BlogPost({
   params,
