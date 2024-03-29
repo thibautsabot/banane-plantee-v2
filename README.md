@@ -20,7 +20,8 @@ When you create new images and publish the post, a new git commit will be create
 It allows us to not worry about the image and its size as it won't be stored in the DB or passed in the requests.
 
 Since we are using vercel that creates a new environement each deploy, we can't really add the images to the filesystem.
-We could upload them to a CDN, but for now it's nice to keep them in the repo in case we switch providers.
+We could upload them to S3 or Cloudinary, but for now it's fine to keep them in the repo (in case we switch providers).
+The git clone is longer but it's easy to manage.
 
 We replace the base64 source by the path to the `public` folder (it works since it has been pushed).
 
@@ -49,5 +50,5 @@ A custom image handler was added to benefit from [`next/image`](https://nextjs.o
 
 ## TODO :
 
-- Static generation and manual invalidate
+- Static generation and manual invalidate https://nextjs.org/docs/app/api-reference/functions/generate-static-params
 - A11y
