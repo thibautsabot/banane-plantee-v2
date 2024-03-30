@@ -46,33 +46,29 @@ export default function EditorComponent({
         init={{
           height: 500,
           language: "fr_FR",
-          menubar: false,
+          menubar: "edit format tools",
           promotion: false,
           statusbar: false,
           plugins: [
             "advlist",
             "autolink",
+            "emoticons",
             "lists",
             "link",
             "image",
-            "charmap",
-            "anchor",
             "searchreplace",
-            "visualblocks",
-            "code",
             "fullscreen",
-            "insertdatetime",
-            "media",
             "table",
             "image",
             "preview",
             "wordcount",
+            "hr",
           ],
           toolbar:
-            "undo redo | blocks | " +
-            "image" +
-            "bold italic forecolor | alignleft aligncenter " +
-            "alignright alignjustify | bullist numlist outdent indent | " +
+            "undo redo | blocks |" +
+            "bold italic forecolor | alignleft aligncenter alignright alignjustify |" +
+            "link | emoticons | hr | searchreplace | table | preview |" +
+            "bullist numlist outdent indent | " +
             "removeformat",
         }}
       />

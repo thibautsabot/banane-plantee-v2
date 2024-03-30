@@ -51,7 +51,4 @@ A custom image handler was added to benefit from [`next/image`](https://nextjs.o
 ## TODO :
 
 - Thumbnail edit
-- New Post button
-- Fix mobile design
-- Import tags
-- TinyMCE plugins
+- PWA

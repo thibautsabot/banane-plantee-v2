@@ -1,6 +1,6 @@
 "use client";
 
-import { WORDINGS, isKnownSlug } from "../utils/slugToWording";
+import { WORDINGS, isKnownTag } from "../utils/slugToWording";
 
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -20,7 +20,7 @@ export default function Banner() {
         }}
         alt="banniere banane plantee"
       />
-      {isKnownSlug(pathname) && (
+      {isKnownTag(pathname) && (
         <h1 className="border-white border-4 absolute text-center left-1/2 top-[45%] p-4 -translate-x-1/2 -translate-y-[45%] text-white text-4xl font-bold">
           {WORDINGS[pathname]}
         </h1>

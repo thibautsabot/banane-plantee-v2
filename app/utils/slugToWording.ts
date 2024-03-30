@@ -15,6 +15,6 @@ export const WORDINGS = {
 
 export type Wording = keyof typeof WORDINGS;
 
-export function isKnownSlug(slug: string): slug is Wording {
-    return slug in WORDINGS;
+export function isKnownTag(tag: string): tag is Wording {
+    return tag in WORDINGS;
 }

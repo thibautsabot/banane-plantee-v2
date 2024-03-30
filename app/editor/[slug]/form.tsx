@@ -10,6 +10,7 @@ import { createPost } from "@/prisma/post";
 import slugify from "@/app/utils/slugify";
 import { revalidatePost } from "./revalidate";
 import Image from "next/image";
+import { WORDINGS } from "@/app/utils/slugToWording";
 
 export interface Image {
   name: string;
@@ -65,7 +66,7 @@ export default function EditorForm({ post }: { post: Post | null }) {
           content: parsedHtml.body.innerHTML,
         });
         setHasError(false);
-        revalidatePost(slug);
+        revalidatePost({ slug, tag });
       } catch (e) {
         setHasError(true);
         throw e;
@@ -109,7 +110,7 @@ export default function EditorForm({ post }: { post: Post | null }) {
         />
         <br />
         <label
-          className="block text-sm font-medium text-gray-900 dark:text-white"
+          className="block text-sm font-medium text-gray-900"
           htmlFor="tag"
         >
           Tag :
@@ -120,9 +121,11 @@ export default function EditorForm({ post }: { post: Post | null }) {
           value={tag}
           onChange={(e) => setTag(e.target.value)}
         >
-          <option>petitdej</option>
-          <option>dessert</option>
-          <option>antigaspi</option>
+          {Object.entries(WORDINGS).map(([tag, wording]) => (
+            <option key={tag} value={tag}>
+              {wording}
+            </option>
+          ))}
         </select>
         <p className="block font-medium text-gray-900">
           Miniature :
