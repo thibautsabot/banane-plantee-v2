@@ -114,15 +114,6 @@ export default function EditorForm({ post }: { post: Post | null }) {
         >
           Tag :
         </label>
-        <p className="block font-medium text-gray-900">
-          Miniature :
-          <Image
-            src={post?.thumbnail || "/blog/no-image.jpg"}
-            alt="thumbnail"
-            width={200}
-            height={200}
-          />
-        </p>
         <select
           className="w-fit my-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           id="tag"
@@ -133,6 +124,15 @@ export default function EditorForm({ post }: { post: Post | null }) {
           <option>dessert</option>
           <option>antigaspi</option>
         </select>
+        <p className="block font-medium text-gray-900">
+          Miniature :
+          <Image
+            src={post?.thumbnail || "/blog/no-image.jpg"}
+            alt="thumbnail"
+            width={200}
+            height={200}
+          />
+        </p>
         <p className="mb-2">Contenu :</p>
         <EditorComponent initialContent={post?.content} editorRef={editorRef} />
 

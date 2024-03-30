@@ -9,7 +9,9 @@ export default async function Home() {
   return (
     <main className="w-3/4 mx-auto">
       <Banner />
-      <h1 className="my-4 text-4xl">Bienvenue dans ma cuisine !</h1>
+      <h1 className="mb-4 mt-8 text-3xl text-center">
+        Bienvenue dans ma cuisine !
+      </h1>
       <p>
         Passionnée de cuisine depuis des années, je réalise de nombreuses
         recettes. En tant amatrice, je fais une cuisine simple au quotidien mais
@@ -30,16 +32,16 @@ export default async function Home() {
       <p>
         Bonne visite sur <strong>Bananeplantée !</strong>
       </p>
-      <h1 className="my-4 text-4xl">Derniers articles</h1>
+      <h1 className="mb-4 mt-14 text-5xl text-center">Derniers articles</h1>
       <div className="flex flex-wrap flex-col lg:grid lg:grid-cols-3 lg:gap-4">
         {posts.map((post) => {
           return (
             <article
               key={post.id}
-              className="flex flex-col justify-between overflow-hidden break-words flex-none bg-[#efefef] rounded text-[#4a4a4a] p-6 my-2 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)]"
+              className="bg-stone-100 flex flex-col justify-between overflow-hidden break-words flex-none rounded text-[#4a4a4a] p-6 my-2 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)]"
             >
               <Image
-                className="rounded h-[250px] object-cover"
+                className="mx-auto rounded h-[250px] object-cover"
                 src={post.thumbnail}
                 alt=""
                 width={250}
@@ -72,8 +74,8 @@ export default async function Home() {
         className="mx-auto my-8"
         src="/round-logo.png"
         alt=""
-        width={150}
-        height={150}
+        width={120}
+        height={120}
       />
     </main>
   );

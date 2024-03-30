@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
-      <body>
+      <body className="bg-[#f0ecec]">
         <Header />
         <div className="max-w-[1344px] mx-auto mb-8">{children}</div>
         <Footer />

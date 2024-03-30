@@ -43,6 +43,10 @@ const links = [
     href: "/tags/antigaspi",
     text: "Anti-gaspi",
   },
+  {
+    href: "/presentation",
+    text: `${String.fromCodePoint(0x1f34c)} Qui suis-je ?`,
+  },
 ];
 
 export default function Nav() {
@@ -87,44 +91,6 @@ export default function Nav() {
             {link.text}
           </Link>
         ))}
-        <div
-          ref={articleRef}
-          className={`${
-            isBurgerMenuOpen ? "my-4" : "mx-4"
-          } flex justify-center flex-col`}
-          onClick={() => setIsArticleOpen(!isArticleOpen)}
-        >
-          <div className="flex hover:underline justify-center">
-            <p
-              className={
-                pathname === "/zero-dechet" || pathname === "/presentation"
-                  ? "underline"
-                  : ""
-              }
-            >
-              Article
-            </p>
-            <span
-              className={`ml-4 border-2 border-white border-r-0 border-t-0
-          block h-3 w-3 z-10 origin-center ${
-            isArticleOpen ? "rotate-[135deg] mt-2" : "-rotate-45  mt-1"
-          }`}
-            />
-          </div>
-          {isArticleOpen && (
-            <div
-              onClick={(e) => e.stopPropagation()}
-              className="z-10 mt-4 flex flex-col lg:mt-0 lg:absolute lg:top-full lg:right-0 lg:bg-candiceBrown px-4"
-            >
-              <Link className="hover:underline pb-2" href="/presentation">
-                Présentation
-              </Link>
-              <Link className="hover:underline pb-2" href="/zero-dechet">
-                Zéro Déchet
-              </Link>
-            </div>
-          )}
-        </div>
       </div>
     </>
   );
