@@ -1,13 +1,9 @@
 /** @type {import('next').NextConfig} */
-// import withSerwistInit from "@serwist/next";
+import withSerwistInit from "@serwist/next";
 
-// const withSerwist = withSerwistInit({
-//   swSrc: "app/sw.ts",
-//   swDest: "public/sw.js",
-// });
+const withSerwist = withSerwistInit({
+  swSrc: "app/sw.ts",
+  swDest: "public/sw.js",
+});
 
-// export default withSerwist({ reactStrictMode: true });
-
-const nextConfig = {};
-
-export default nextConfig;
+export default withSerwist({ reactStrictMode: true });

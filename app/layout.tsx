@@ -2,7 +2,7 @@ import "./globals.css";
 
 import Footer from "./layout/footer";
 import Header from "./layout/header";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 
 const TITLE = "Banane Plantée";
 const DESCRIPTION = "Le site de cuisine zéro dechet !";
@@ -17,6 +17,10 @@ export const metadata: Metadata = {
     title: TITLE,
   },
   manifest: "/manifest.json",
+};
+
+export const viewport: Viewport = {
+  themeColor: "#694c3c",
 };
 
 export default function RootLayout({
