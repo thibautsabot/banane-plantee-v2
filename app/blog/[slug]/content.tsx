@@ -35,8 +35,8 @@ export default function Content({ post }: { post: Post }) {
       <div>{parsedContent}</div>
       {isKnownTag(post.tag) && (
         <p className="italic mt-8 text-sm text-right">
-          Le {post.createdAt.toLocaleDateString()}, dans la catégorie{" "}
-          <Link className="text-sky-500 underline" href={`/tags/${post.tag}`}>
+          Le {post.createdAt.toLocaleDateString("FR-fr")}, dans la catégorie{" "}
+          <Link className="text-sky-700 underline" href={`/tags/${post.tag}`}>
             {WORDINGS[post.tag]}
           </Link>
         </p>
