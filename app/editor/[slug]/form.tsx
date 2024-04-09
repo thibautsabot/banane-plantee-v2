@@ -163,6 +163,7 @@ export default function EditorForm({ post }: { post: Post | null }) {
           type="file"
           id="avatar"
           name="avatar"
+          className="w-fit"
           onChange={onChangeThumbnail}
         />
         <p className="mb-2">Contenu :</p>
