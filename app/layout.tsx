@@ -4,9 +4,19 @@ import Footer from "./layout/footer";
 import Header from "./layout/header";
 import type { Metadata } from "next";
 
+const TITLE = "Banane Plantée";
+const DESCRIPTION = "Le site de cuisine zéro dechet !";
+
 export const metadata: Metadata = {
-  title: "Banane Plantée",
-  description: "Le site de cuisine zéro dechet !",
+  applicationName: TITLE,
+  title: TITLE,
+  description: DESCRIPTION,
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: TITLE,
+  },
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({
