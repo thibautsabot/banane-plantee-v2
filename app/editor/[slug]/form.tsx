@@ -11,6 +11,7 @@ import slugify from "@/app/utils/slugify";
 import { revalidatePost } from "./revalidate";
 import Image from "next/image";
 import { WORDINGS } from "@/app/utils/slugToWording";
+import blobToBase64 from "@/app/utils/blobToBase64";
 
 export interface Image {
   name: string;
@@ -20,8 +21,30 @@ export interface Image {
 export default function EditorForm({ post }: { post: Post | null }) {
   const editorRef = useRef<TinyMCEEditor | null>(null);
   const [title, setTitle] = useState(post?.title || "");
+  const [thumbnail, setThumbnail] = useState(
+    post?.thumbnail || "/blog/no-image.jpg"
+  );
+  const [tempThunbnail, setTempThumbnail] = useState<string | null>(null);
   const [hasError, setHasError] = useState<boolean | null>(null);
   const [tag, setTag] = useState(post?.tag || "dessert");
+
+  const onChangeThumbnail = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    const base64 = await blobToBase64(file);
+    const slugName = slugify(file.name);
+
+    setThumbnail(`/blog/${slugName}.png`);
+    setTempThumbnail(base64.content);
+    commitPostImages([
+      {
+        name: slugName,
+        content: base64.content.replace(/^data:image\/\w+;base64,/, ""),
+      },
+    ]);
+  };
 
   const uploadImageAndMutateHTML = (parsedHtml: Document, images: Image[]) => {
     if (editorRef.current) {
@@ -62,7 +85,7 @@ export default function EditorForm({ post }: { post: Post | null }) {
           title,
           tag,
           slug,
-          thumbnail: post?.thumbnail,
+          thumbnail: thumbnail,
           content: parsedHtml.body.innerHTML,
         });
         setHasError(false);
@@ -127,15 +150,21 @@ export default function EditorForm({ post }: { post: Post | null }) {
             </option>
           ))}
         </select>
-        <p className="block font-medium text-gray-900">
+        <label htmlFor="avatar" className="block font-medium text-gray-900">
           Miniature :
-          <Image
-            src={post?.thumbnail || "/blog/no-image.jpg"}
-            alt="thumbnail"
-            width={200}
-            height={200}
-          />
-        </p>
+        </label>
+        <Image
+          src={tempThunbnail || thumbnail}
+          alt=""
+          width={200}
+          height={200}
+        />
+        <input
+          type="file"
+          id="avatar"
+          name="avatar"
+          onChange={onChangeThumbnail}
+        />
         <p className="mb-2">Contenu :</p>
         <EditorComponent initialContent={post?.content} editorRef={editorRef} />
 
