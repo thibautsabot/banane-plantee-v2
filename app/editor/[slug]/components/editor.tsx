@@ -62,7 +62,6 @@ export default function EditorComponent({
             "image",
             "preview",
             "wordcount",
-            "hr",
           ],
           toolbar:
             "undo redo | blocks |" +
