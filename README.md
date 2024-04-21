@@ -50,5 +50,6 @@ A custom image handler was added to benefit from [`next/image`](https://nextjs.o
 
 ## TODO :
 
-- Last 2 recipe
-- PWA
+- Multiple tags
+- Draft
+- Auto resize pictures

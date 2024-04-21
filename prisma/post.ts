@@ -31,7 +31,7 @@ export async function getPostBySlug(slug: string) {
 }
 
 export async function getPostsByTag(tag: string) {
-  return await prisma.post.findMany({ where: { tag }})
+  return await prisma.post.findMany({ where: { tag }, orderBy: { createdAt: 'desc' }})
 }
 
 export async function getAllPosts(limit?: number) {
