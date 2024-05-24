@@ -19,6 +19,5 @@
   "background_color": "#ffffff",
   "start_url": "/",
   "display": "standalone",
-  "orientation": "any",
   "lang": "fr-FR"
 }
