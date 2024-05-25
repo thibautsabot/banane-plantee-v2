@@ -9,7 +9,7 @@ export default function Presentation() {
       <h2>Faisons un peu connaissance !</h2>
 
       <p>
-        Je m&apos;appelle <strong>Candice</strong> et j&apos;ai 28 ans.
+        Je m&apos;appelle <strong>Candice</strong> et j&apos;ai 30 ans.
         Originaire de la région Rhône-Alpes, j&apos;habite actuellement sur
         Paris avec mon conjoint. Je suis infirmière depuis 7 ans et après avoir
         exercé pendant plusieurs années, j&apos;ai décidé de me tourner vers
@@ -46,6 +46,7 @@ export default function Presentation() {
         className="mx-auto"
         alt=""
         src="/candice.jpg"
+        quality={80}
         width={350}
         height={260}
       />
